@@ -3,10 +3,15 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Entypo';
+
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Mapper from './components/Mapper';
 import Listings from './components/Listings';
+import CheckIn from './components/CheckIn';
+import ShareStore from './components/ShareStore';
+
 
 const AuthStack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -31,7 +36,27 @@ const HuntStackScreen = () => (
 export default function App() {
   return (
     <NavigationContainer>
-      <Tabs.Navigator>
+      <Tabs.Navigator
+      screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === 'Map') {
+              iconName = focused ? 'location' : 'location-pin';
+            } else if (route.name === 'Profile') {
+              iconName = focused ? 'info-with-circle' : 'info';
+            } else if (route.name === 'The Hunt') {
+              iconName = focused ? 'image-inverted' : 'image';
+            }
+
+            return <Icon name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'blue',
+          inactiveTintColor: 'gray',
+        }}
+      >
         <Tabs.Screen name="Profile" component={AuthStackScreen} />
         <Tabs.Screen name="Map" component={Mapper} />
         <Tabs.Screen name="The Hunt" component={HuntStackScreen} />
